@@ -1,0 +1,122 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+@media all {html{
+font-family:Garamond, Palatino, Times;
+font-size:20px;
+line-height:1.3;
+}}
+@media all and (max-width:800px){html{font-size:28px;}}
+@media all and (max-width:500px){html{font-size:14px;}}
+</style>
+<script src="three.min.js"></script>
+<script>
+function matrixToString(m)
+{
+    var r = m.elements;
+    var s = '[ '+r[0]+', '+r[4]+', '+r[8]+';\n'+r[1]+', '+r[5]+', '+r[9]+';\n'+r[2]+', '+r[6]+', '+r[10]+' ]';
+    return s;
+}
+function doOutput(o)
+{
+    o.updateMatrix();
+    document.getElementById("resmatrix").value = matrixToString(o.matrix);
+    var q = o.quaternion;
+    document.getElementById("resq").value = '[ '+q.x+', '+q.y+', '+q.z+', '+q.w+' ]';
+    
+    var axis = [0,0,0];
+    var angle = 2 * Math.acos(q.w);
+    if (1 - (q.w * q.w) < 0.000001)
+    {
+        axis[0] = q.x;
+        axis[1] = q.y;
+        axis[2] = q.z;
+    }
+    else
+    {
+        var s = Math.sqrt(1 - (q.w * q.w));
+        axis[0] = q.x / s;
+        axis[1] = q.y / s;
+        axis[2] = q.z / s;
+    }
+    document.getElementById("resa").value = '{ [ '+axis.toString()+' ], '+angle+' }';
+}
+function updateM()
+{
+    var m = new THREE.Matrix4();
+    var m00 = document.getElementById("m00").value;
+    var m01 = document.getElementById("m01").value;
+    var m02 = document.getElementById("m02").value;
+    var m10 = document.getElementById("m10").value;
+    var m11 = document.getElementById("m11").value;
+    var m12 = document.getElementById("m12").value;
+    var m20 = document.getElementById("m20").value;
+    var m21 = document.getElementById("m21").value;
+    var m22 = document.getElementById("m22").value;
+    m.set(m00, m01, m02, 1, m10, m11, m12, 1, m20, m21, m22, 1, 0, 0, 0, 1);
+    var o = new THREE.Object3D();
+    o.quaternion.setFromRotationMatrix(m);
+    doOutput(o);
+}
+function updateQ()
+{
+    var q = new THREE.Quaternion(document.getElementById("q0").value, 
+        document.getElementById("q1").value, 
+        document.getElementById("q2").value, 
+        document.getElementById("q3").value);
+    q.normalize();
+    var o = new THREE.Object3D();
+    o.quaternion.copy(q);
+    doOutput(o);
+}
+function updateAxisAngle()
+{
+    var q = new THREE.Quaternion();
+    var axis = new THREE.Vector3(document.getElementById("a0").value, 
+        document.getElementById("a1").value,
+        document.getElementById("a2").value);
+    axis.normalize();
+    q.setFromAxisAngle(axis, document.getElementById("a3").value);
+    q.normalize();
+    var o = new THREE.Object3D();
+    o.quaternion.copy(q);
+    doOutput(o);
+}
+</script>
+</head>
+<body onload="updateQ()">
+<div class="main">
+<div>
+<h1>3D Rotation Calculator</h1>
+<h2>Input</h2>
+<p>Rotation matrix
+<br /><input type="text" id="m00" size="6" value="1" oninput="updateM()"/>
+ <input type="text" id="m01" size="6" value="0" oninput="updateM()"/>
+ <input type="text" id="m02" size="6" value="0" oninput="updateM()"/>
+<br /><input type="text" id="m10" size="6" value="0" oninput="updateM()"/>
+ <input type="text" id="m11" size="6" value="1" oninput="updateM()"/>
+ <input type="text" id="m12" size="6" value="0" oninput="updateM()"/>
+<br /><input type="text" id="m20" size="6" value="0" oninput="updateM()"/>
+ <input type="text" id="m21" size="6" value="0" oninput="updateM()"/>
+ <input type="text" id="m22" size="6" value="1" oninput="updateM()"/>
+<p>Quaternion
+<br />x=<input type="text" id="q0" size="6" value="0" oninput="updateQ()"/>
+ y=<input type="text" id="q1" size="6" value="0" oninput="updateQ()"/>
+ z=<input type="text" id="q2" size="6" value="0" oninput="updateQ()"/>
+ w (real part) =<input type="text" id="q3" size="6" value="0" oninput="updateQ()"/>
+<p>Axis-angle
+<br />Axis x=<input type="text" id="a0" size="6" value="0" oninput="updateAxisAngle()"/>
+ y=<input type="text" id="a1" size="6" value="0" oninput="updateAxisAngle()"/>
+ z=<input type="text" id="a2" size="6" value="0" oninput="updateAxisAngle()"/>
+ Angle (radians) =<input type="text" id="a3" size="6" value="0" oninput="updateAxisAngle()"/>
+<h2>Output</h2>
+<p>Rotation matrix
+<br /><textarea id="resmatrix" rows="3" cols="70" readonly></textarea>
+<p>Quaternion [x, y, z, w]
+<br /><textarea id="resq" rows="1" cols="95" readonly></textarea>
+<p>Axis-Angle {[x, y, z], angle (radian)}
+<br /><textarea id="resa" rows="1" cols="95" readonly></textarea>
+</div>
+</div>
+</body></html>
