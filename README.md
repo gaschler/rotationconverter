@@ -9,3 +9,8 @@ https://github.com/mrdoob/three.js
 
 ## License
 Permissive MIT license, see file LICENSE
+
+## Build
+To generate the minified math part of three.js, call
+
+   python three.js-master/utils/build/build.py --include math --minify --output three-onlymath.min.js

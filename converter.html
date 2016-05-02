@@ -1,31 +1,61 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=500, initial-scale=1">
+<title>3D Rotation Converter</title>
 <style>
 @media all {html{
 font-family:Garamond, Palatino, Times;
 font-size:20px;
 line-height:1.3;
 }}
-@media all and (max-width:800px){html{font-size:28px;}}
+@media all and (max-width:800px){html{font-size:17px;}}
 @media all and (max-width:500px){html{font-size:14px;}}
+select, input, textarea{font-size:0.9rem;}
+input{width:5rem;}
+input + input, select + input, select + textarea{
+margin-left:0.5rem;margin-top:0.5rem;
+}
+.pi{
+background:#eee;
+transition:background 0.6s;
+-webkit-transition:background 0.6s;
+}
+.phigh{
+background:#ccc;
+}
 </style>
-<script src="three.min.js"></script>
+<script src="three-onlymath.min.js"></script>
 <script>
+var quat = new THREE.Quaternion();
+var highlightedId = "pm";
 function matrixToString(m)
 {
     var r = m.elements;
     var s = '[ '+r[0]+', '+r[4]+', '+r[8]+';\n'+r[1]+', '+r[5]+', '+r[9]+';\n'+r[2]+', '+r[6]+', '+r[10]+' ]';
     return s;
 }
-function doOutput(o)
+function highlight(id)
 {
-    o.updateMatrix();
-    document.getElementById("resmatrix").value = matrixToString(o.matrix);
-    var q = o.quaternion;
+    document.getElementById(highlightedId).classList.remove('phigh');
+    highlightedId = id;
+    document.getElementById(id).classList.add('phigh');
+}
+function setQ(q)
+{
+    q.normalize();
+    quat = q;
+    doOutput();
+}
+function doOutput()
+{
+    var q = quat;
+    var m = new THREE.Matrix4();
+    m.makeRotationFromQuaternion(q);
+    document.getElementById("resmatrix").value = matrixToString(m);
     document.getElementById("resq").value = '[ '+q.x+', '+q.y+', '+q.z+', '+q.w+' ]';
     
-    var axis = [0,0,0];
+    var axis = [0, 0, 0];
     var angle = 2 * Math.acos(q.w);
     if (1 - (q.w * q.w) < 0.000001)
     {
@@ -35,12 +65,20 @@ function doOutput(o)
     }
     else
     {
+        // http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToAngle/
         var s = Math.sqrt(1 - (q.w * q.w));
         axis[0] = q.x / s;
         axis[1] = q.y / s;
         axis[2] = q.z / s;
     }
     document.getElementById("resa").value = '{ [ '+axis.toString()+' ], '+angle+' }';
+    
+    var r = [axis[0] * angle, axis[1] * angle, axis[2] * angle];
+    document.getElementById("resr").value = '[ '+r.toString()+' ]';
+    
+    var eu = new THREE.Euler();
+    eu.setFromRotationMatrix(m, document.getElementById("reseuler").value);
+    document.getElementById("rese").value = '[ '+eu.toArray().toString()+' ]'; 
 }
 function updateM()
 {
@@ -55,9 +93,10 @@ function updateM()
     var m21 = document.getElementById("m21").value;
     var m22 = document.getElementById("m22").value;
     m.set(m00, m01, m02, 1, m10, m11, m12, 1, m20, m21, m22, 1, 0, 0, 0, 1);
-    var o = new THREE.Object3D();
-    o.quaternion.setFromRotationMatrix(m);
-    doOutput(o);
+    var q = new THREE.Quaternion();
+    q.setFromRotationMatrix(m);
+    setQ(q);
+    highlight("pm");
 }
 function updateQ()
 {
@@ -65,10 +104,8 @@ function updateQ()
         document.getElementById("q1").value, 
         document.getElementById("q2").value, 
         document.getElementById("q3").value);
-    q.normalize();
-    var o = new THREE.Object3D();
-    o.quaternion.copy(q);
-    doOutput(o);
+    setQ(q);
+    highlight("pq");
 }
 function updateAxisAngle()
 {
@@ -78,45 +115,106 @@ function updateAxisAngle()
         document.getElementById("a2").value);
     axis.normalize();
     q.setFromAxisAngle(axis, document.getElementById("a3").value);
-    q.normalize();
-    var o = new THREE.Object3D();
-    o.quaternion.copy(q);
-    doOutput(o);
+    setQ(q);
+    highlight("pa");
+}
+function updateAxis()
+{
+    var axis = new THREE.Vector3(document.getElementById("r0").value, 
+        document.getElementById("r1").value,
+        document.getElementById("r2").value);
+    var angle = axis.length();
+    axis.normalize();
+    var q = new THREE.Quaternion();
+    q.setFromAxisAngle(axis, angle);
+    setQ(q);
+    highlight("pr");
+}
+function updateEuler()
+{
+    var e = new THREE.Euler(document.getElementById("e0").value, 
+        document.getElementById("e1").value,
+        document.getElementById("e2").value,
+        document.getElementById("euler").value);
+    var q = new THREE.Quaternion();
+    q.setFromEuler(e);
+    setQ(q);
+    highlight("pe");
 }
 </script>
 </head>
-<body onload="updateQ()">
+<body onload="updateM()">
 <div class="main">
 <div>
-<h1>3D Rotation Calculator</h1>
+
+<h1>3D Rotation Converter</h1>
+
 <h2>Input</h2>
-<p>Rotation matrix
-<br /><input type="text" id="m00" size="6" value="1" oninput="updateM()"/>
- <input type="text" id="m01" size="6" value="0" oninput="updateM()"/>
- <input type="text" id="m02" size="6" value="0" oninput="updateM()"/>
-<br /><input type="text" id="m10" size="6" value="0" oninput="updateM()"/>
- <input type="text" id="m11" size="6" value="1" oninput="updateM()"/>
- <input type="text" id="m12" size="6" value="0" oninput="updateM()"/>
-<br /><input type="text" id="m20" size="6" value="0" oninput="updateM()"/>
- <input type="text" id="m21" size="6" value="0" oninput="updateM()"/>
- <input type="text" id="m22" size="6" value="1" oninput="updateM()"/>
-<p>Quaternion
-<br />x=<input type="text" id="q0" size="6" value="0" oninput="updateQ()"/>
- y=<input type="text" id="q1" size="6" value="0" oninput="updateQ()"/>
- z=<input type="text" id="q2" size="6" value="0" oninput="updateQ()"/>
- w (real part) =<input type="text" id="q3" size="6" value="0" oninput="updateQ()"/>
-<p>Axis-angle
-<br />Axis x=<input type="text" id="a0" size="6" value="0" oninput="updateAxisAngle()"/>
- y=<input type="text" id="a1" size="6" value="0" oninput="updateAxisAngle()"/>
- z=<input type="text" id="a2" size="6" value="0" oninput="updateAxisAngle()"/>
- Angle (radians) =<input type="text" id="a3" size="6" value="0" oninput="updateAxisAngle()"/>
+<p class="pi" id="pm">Rotation matrix
+<br /><input type="text" id="m00" value="1" oninput="updateM()"/>
+<input type="text" id="m01" value="0" oninput="updateM()"/>
+<input type="text" id="m02" value="0" oninput="updateM()"/> &nbsp;
+<br /><input type="text" id="m10" value="0" oninput="updateM()"/>
+<input type="text" id="m11" value="1" oninput="updateM()"/>
+<input type="text" id="m12" value="0" oninput="updateM()"/> &nbsp;
+<br /><input type="text" id="m20" value="0" oninput="updateM()"/>
+<input type="text" id="m21" value="0" oninput="updateM()"/>
+<input type="text" id="m22" value="1" oninput="updateM()"/>
+<p class="pi" id="pq">Quaternion
+<br />x=<input type="text" id="q0" value="0" oninput="updateQ()"/>
+y=<input type="text" id="q1" value="0" oninput="updateQ()"/>
+z=<input type="text" id="q2" value="0" oninput="updateQ()"/>
+w (real part) =<input type="text" id="q3" value="0" oninput="updateQ()"/>
+<p class="pi" id="pa">Axis-angle
+<br />Axis x=<input type="text" id="a0"  value="0" oninput="updateAxisAngle()"/>
+y=<input type="text" id="a1" value="0" oninput="updateAxisAngle()"/>
+z=<input type="text" id="a2" value="0" oninput="updateAxisAngle()"/>
+Angle (radians) =<input type="text" id="a3" value="0" oninput="updateAxisAngle()"/>
+<p class="pi" id="pr">Axis with angle magnitude (radians)
+<br />Axis x=<input type="text" id="r0" value="0" oninput="updateAxis()"/>
+y=<input type="text" id="r1" value="0" oninput="updateAxis()"/>
+z=<input type="text" id="r2" value="0" oninput="updateAxis()"/>
+<p class="pi" id="pe">Euler angles of multiple axis rotations (radians)
+<br /><select id="euler" onchange="updateEuler()">
+<option value="XYZ" selected>XYZ</option>
+<option value="XZY">XZY</option>
+<option value="YXZ">YXZ</option>
+<option value="YZX">YZX</option>
+<option value="ZXY">ZXY</option>
+<option value="ZYX">ZYX</option>
+</select>
+<input type="text" id="e0" value="0" oninput="updateEuler()"/>
+<input type="text" id="e1" value="0" oninput="updateEuler()"/>
+<input type="text" id="e2" value="0" oninput="updateEuler()"/>
+
 <h2>Output</h2>
 <p>Rotation matrix
 <br /><textarea id="resmatrix" rows="3" cols="70" readonly></textarea>
 <p>Quaternion [x, y, z, w]
 <br /><textarea id="resq" rows="1" cols="95" readonly></textarea>
-<p>Axis-Angle {[x, y, z], angle (radian)}
+<p>Axis-Angle {[x, y, z], angle (radians)}
 <br /><textarea id="resa" rows="1" cols="95" readonly></textarea>
+<p>Axis with angle magnitude (radians) [x, y, z]
+<br /><textarea id="resr" rows="1" cols="95" readonly></textarea>
+<p>Euler angles (radians)
+<br /><select id="reseuler" onchange="doOutput()">
+<option value="XYZ" selected>XYZ</option>
+<option value="XZY">XZY</option>
+<option value="YXZ">YXZ</option>
+<option value="YZX">YZX</option>
+<option value="ZXY">ZXY</option>
+<option value="ZYX">ZYX</option>
+</select>
+<textarea id="rese" rows="1" cols="75" readonly></textarea>
+
+<h2>Details</h2>
+<p>
+Please note that rotation formats vary.
+For quaternions, it is not uncommon to note the real part first.
+Euler angles can be defined with many different combinations (see <a href="https://en.wikipedia.org/wiki/Euler_angles#Tait.E2.80.93Bryan_angles">definition of Cardan angles</a>).
+<p>
+If there are any bugs, please push fixes to the <a href="https://github.com/gaschler/rotationconverter">Rotation Converter git repo</a>.
+For almost all conversions, <a href="http://threejs.org/docs/index.html#Reference/Math/Quaternion">three.js Math</a> is used internally.
 </div>
 </div>
 </body></html>
