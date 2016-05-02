@@ -1,7 +1,7 @@
 # Rotation Converter
 A simple HTML+JavaScript page to convert between different 3D rotation formats, quaternions, Rodrigues angles, Euler angles, etc.
 
-__You can run https://cdn.rawgit.com/gaschler/rotationconverter/master/converter.html directly to convert rotations online__
+__You can run https://cdn.rawgit.com/gaschler/rotationconverter/master/rotationconverter.html directly to convert rotations online__
 
 ## Dependencies
 Most of the conversion is calculated with the [three.js library](https://github.com/mrdoob/three.js) (which is also MIT-licensed).
