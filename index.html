@@ -36,6 +36,10 @@ body{
 input{
     width:5rem;
 }
+input[type="radio"]
+{
+    width:auto;
+}
 input, select{
     margin-right:0.5rem;margin-top:0.5rem;
 }
@@ -68,50 +72,54 @@ textarea{
 <h1>3D Rotation Converter</h1>
 
 <h2>Input</h2>
-<p class="pi" id="pm">Rotation matrix
-<br /><span class="dl"></span><input type="text" id="m00" value="1" oninput="updateM()"/>
-<span class="dl2"></span><input type="text" id="m01" value="0" oninput="updateM()"/>
-<span class="dl2"></span><input type="text" id="m02" value="0" oninput="updateM()"/> &nbsp;
-<br /><span class="dl"></span><input type="text" id="m10" value="0" oninput="updateM()"/>
-<span class="dl2"></span><input type="text" id="m11" value="1" oninput="updateM()"/>
-<span class="dl2"></span><input type="text" id="m12" value="0" oninput="updateM()"/> &nbsp;
-<br /><span class="dl"></span><input type="text" id="m20" value="0" oninput="updateM()"/>
-<span class="dl2"></span><input type="text" id="m21" value="0" oninput="updateM()"/>
-<span class="dl2"></span><input type="text" id="m22" value="1" oninput="updateM()"/>
-<p class="pi" id="pq">Quaternion
+<p>Input angle format:
+<label><input type="radio" id="iformatrad" name="iformat" value="0" checked onchange="update(inputMode)"/>Radians</label>
+<label><input type="radio" id="iformatdeg" name="iformat" value="1" onchange="update(inputMode)"/>Degrees</label>
+<p class="pi" id="ip0">Rotation matrix
+<br /><span class="dl"></span><input type="text" id="m00" value="1" oninput="update(0)"/>
+<span class="dl2"></span><input type="text" id="m01" value="0" oninput="update(0)"/>
+<span class="dl2"></span><input type="text" id="m02" value="0" oninput="update(0)"/> &nbsp;
+<br /><span class="dl"></span><input type="text" id="m10" value="0" oninput="update(0)"/>
+<span class="dl2"></span><input type="text" id="m11" value="1" oninput="update(0)"/>
+<span class="dl2"></span><input type="text" id="m12" value="0" oninput="update(0)"/> &nbsp;
+<br /><span class="dl"></span><input type="text" id="m20" value="0" oninput="update(0)"/>
+<span class="dl2"></span><input type="text" id="m21" value="0" oninput="update(0)"/>
+<span class="dl2"></span><input type="text" id="m22" value="1" oninput="update(0)"/>
+<p class="pi" id="ip1">Quaternion
 <br />
-<span class="dl">x</span><input type="text" id="q0" value="0" oninput="updateQ()"/>
-<span class="dl2">y</span><input type="text" id="q1" value="0" oninput="updateQ()"/>
-<span class="dl2">z</span><input type="text" id="q2" value="0" oninput="updateQ()"/>
-<span class="dl">w (real part)</span><input type="text" id="q3" value="0" oninput="updateQ()"/>
-<p class="pi" id="pa">Axis-angle
+<span class="dl">x</span><input type="text" id="q0" value="0" oninput="update(1)"/>
+<span class="dl2">y</span><input type="text" id="q1" value="0" oninput="update(1)"/>
+<span class="dl2">z</span><input type="text" id="q2" value="0" oninput="update(1)"/>
+<span class="dl">w (real part)</span><input type="text" id="q3" value="1" oninput="update(1)"/>
+<p class="pi" id="ip2">Axis-angle
 <br />
-<span class="dl">Axis x</span><input type="text" id="a0"  value="0" oninput="updateAxisAngle()"/>
-<span class="dl2">y</span><input type="text" id="a1" value="0" oninput="updateAxisAngle()"/>
-<span class="dl2">z</span><input type="text" id="a2" value="0" oninput="updateAxisAngle()"/>
-<span class="dl">Angle (radians)</span><input type="text" id="a3" value="0" oninput="updateAxisAngle()"/>
-<p class="pi" id="pr">Axis with angle magnitude (radians)
-<br /><span class="dl">Axis x</span><input type="text" id="r0" value="0" oninput="updateAxis()"/>
-<span class="dl2">y</span><input type="text" id="r1" value="0" oninput="updateAxis()"/>
-<span class="dl2">z</span><input type="text" id="r2" value="0" oninput="updateAxis()"/>
-<p class="pi" id="pe">Euler angles of multiple axis rotations (radians)
+<span class="dl">Axis x</span><input type="text" id="a0"  value="0" oninput="update(2)"/>
+<span class="dl2">y</span><input type="text" id="a1" value="0" oninput="update(2)"/>
+<span class="dl2">z</span><input type="text" id="a2" value="0" oninput="update(2)"/>
+<span class="dl">Angle<span name="spananglei"> (radians)</span></span><input type="text" id="a3" value="0" oninput="update(2)"/>
+<p class="pi" id="ip3">Axis with angle magnitude<span name="spananglei"> (radians)</span>
+<br /><span class="dl">Axis x</span><input type="text" id="r0" value="0" oninput="update(3)"/>
+<span class="dl2">y</span><input type="text" id="r1" value="0" oninput="update(3)"/>
+<span class="dl2">z</span><input type="text" id="r2" value="0" oninput="update(3)"/>
+<p class="pi" id="ip4">Euler angles of multiple axis rotations<span name="spananglei"> (radians)</span>
 <br />
-<span class="dl"><select id="euler" onchange="updateEuler()">
+<span class="dl"><select id="euler" onchange="update(4)">
 <option value="XYZ" selected>XYZ</option>
 <option value="XZY">XZY</option>
 <option value="YXZ">YXZ</option>
 <option value="YZX">YZX</option>
 <option value="ZXY">ZXY</option>
 <option value="ZYX">ZYX</option>
-</select></span><input type="text" id="e0" value="0" oninput="updateEuler()"/>
-<span class="dl2"></span><input type="text" id="e1" value="0" oninput="updateEuler()"/>
-<span class="dl2"></span><input type="text" id="e2" value="0" oninput="updateEuler()"/>
+</select></span><input type="text" id="e0" value="0" oninput="update(4)"/>
+<span class="dl2"></span><input type="text" id="e1" value="0" oninput="update(4)"/>
+<span class="dl2"></span><input type="text" id="e2" value="0" oninput="update(4)"/>
 
 <h2>Output</h2>
 <script src="three-onlymath.min.js"></script>
 <script>
 var quat = new THREE.Quaternion();
-var highlightedId = "pm";
+var highlightedId = 'ip0';
+var inputMode = 0;
 function matrixToString(m)
 {
     var r = m.elements;
@@ -154,86 +162,131 @@ function doOutput()
         axis[1] = q.y / s;
         axis[2] = q.z / s;
     }
-    document.getElementById("resa").value = '{ [ '+axis.toString()+' ], '+angle+' }';
+    document.getElementById("resa").value = '{ [ '+axis.toString()+' ], '+toAngle(angle)+' }';
     
-    var r = [axis[0] * angle, axis[1] * angle, axis[2] * angle];
+    var r = [toAngle(axis[0] * angle), toAngle(axis[1] * angle), toAngle(axis[2] * angle)];
     document.getElementById("resr").value = '[ '+r.toString()+' ]';
     
     var eu = new THREE.Euler();
     eu.setFromRotationMatrix(m, document.getElementById("reseuler").value);
-    document.getElementById("rese").value = '[ '+eu.toArray().toString()+' ]'; 
+    document.getElementById("rese").value = '[ '+toAngle(eu.toArray()[0])+', '+toAngle(eu.toArray()[1])+', '+toAngle(eu.toArray()[2])+' ]';
+
+    var spansi = document.getElementsByName('spananglei');
+    for (var i = 0; i < spansi.length; i++)
+    {
+        if (document.getElementById('iformatrad').checked)
+        {
+            spansi[i].textContent = ' (radians)';
+        }
+        else
+        {
+            spansi[i].textContent = ' (degrees)';
+        }
+    }
+     
+    var spansres = document.getElementsByName('spanangleres');
+    for (var i = 0; i < spansres.length; i++)
+    {
+        if (document.getElementById('resformatrad').checked)
+        {
+            spansres[i].textContent = ' (radians)';
+        }
+        else
+        {
+            spansres[i].textContent = ' (degrees)';
+        }
+    }
 }
-function updateM()
+function update(mode)
 {
-    var m = new THREE.Matrix4();
-    var m00 = document.getElementById("m00").value;
-    var m01 = document.getElementById("m01").value;
-    var m02 = document.getElementById("m02").value;
-    var m10 = document.getElementById("m10").value;
-    var m11 = document.getElementById("m11").value;
-    var m12 = document.getElementById("m12").value;
-    var m20 = document.getElementById("m20").value;
-    var m21 = document.getElementById("m21").value;
-    var m22 = document.getElementById("m22").value;
-    m.set(m00, m01, m02, 1, m10, m11, m12, 1, m20, m21, m22, 1, 0, 0, 0, 1);
+    inputMode = mode;
     var q = new THREE.Quaternion();
-    q.setFromRotationMatrix(m);
+    if (inputMode == 0)
+    {
+        var m = new THREE.Matrix4();
+        var m00 = document.getElementById("m00").value;
+        var m01 = document.getElementById("m01").value;
+        var m02 = document.getElementById("m02").value;
+        var m10 = document.getElementById("m10").value;
+        var m11 = document.getElementById("m11").value;
+        var m12 = document.getElementById("m12").value;
+        var m20 = document.getElementById("m20").value;
+        var m21 = document.getElementById("m21").value;
+        var m22 = document.getElementById("m22").value;
+        m.set(m00, m01, m02, 1, m10, m11, m12, 1, m20, m21, m22, 1, 0, 0, 0, 1);
+        q.setFromRotationMatrix(m);
+    }
+    else if (inputMode == 1)
+    {
+        q = new THREE.Quaternion(document.getElementById("q0").value, 
+            document.getElementById("q1").value, 
+            document.getElementById("q2").value, 
+            document.getElementById("q3").value);
+    }
+    else if (inputMode == 2)
+    {
+        q = new THREE.Quaternion();
+        var axis = new THREE.Vector3(document.getElementById("a0").value, 
+            document.getElementById("a1").value,
+            document.getElementById("a2").value);
+        axis.normalize();
+        q.setFromAxisAngle(axis, toRad(document.getElementById("a3").value));
+    }
+    else if (inputMode == 3)
+    {
+        var axis = new THREE.Vector3(document.getElementById("r0").value, 
+            document.getElementById("r1").value,
+            document.getElementById("r2").value);
+        var angle = toRad(axis.length());
+        axis.normalize();
+        q.setFromAxisAngle(axis, angle);
+    }
+    else if (inputMode == 4)
+    {
+        var e = new THREE.Euler(toRad(document.getElementById("e0").value), 
+            toRad(document.getElementById("e1").value),
+            toRad(document.getElementById("e2").value),
+            document.getElementById("euler").value);
+        q.setFromEuler(e);
+    }
     setQ(q);
-    highlight("pm");
+    highlight('ip' + inputMode);
 }
-function updateQ()
+function toRad(x)
 {
-    var q = new THREE.Quaternion(document.getElementById("q0").value, 
-        document.getElementById("q1").value, 
-        document.getElementById("q2").value, 
-        document.getElementById("q3").value);
-    setQ(q);
-    highlight("pq");
+    if (document.getElementById("iformatdeg").checked)
+    {
+        return x / 180 * Math.PI;
+    }
+    else
+    {
+        return x;
+    }
 }
-function updateAxisAngle()
+function toAngle(x)
 {
-    var q = new THREE.Quaternion();
-    var axis = new THREE.Vector3(document.getElementById("a0").value, 
-        document.getElementById("a1").value,
-        document.getElementById("a2").value);
-    axis.normalize();
-    q.setFromAxisAngle(axis, document.getElementById("a3").value);
-    setQ(q);
-    highlight("pa");
-}
-function updateAxis()
-{
-    var axis = new THREE.Vector3(document.getElementById("r0").value, 
-        document.getElementById("r1").value,
-        document.getElementById("r2").value);
-    var angle = axis.length();
-    axis.normalize();
-    var q = new THREE.Quaternion();
-    q.setFromAxisAngle(axis, angle);
-    setQ(q);
-    highlight("pr");
-}
-function updateEuler()
-{
-    var e = new THREE.Euler(document.getElementById("e0").value, 
-        document.getElementById("e1").value,
-        document.getElementById("e2").value,
-        document.getElementById("euler").value);
-    var q = new THREE.Quaternion();
-    q.setFromEuler(e);
-    setQ(q);
-    highlight("pe");
+    if (document.getElementById("resformatdeg").checked)
+    {
+        return x * 180 / Math.PI;
+    }
+    else
+    {
+        return x;
+    }
 }
 </script>
+<p>Output angle format:
+<label><input type="radio" id="resformatrad" name="resformat" value="0" checked onchange="doOutput()"/>Radians</label>
+<label><input type="radio" id="resformatdeg" name="resformat" value="1" onchange="doOutput()"/>Degrees</label>
 <p>Rotation matrix
 <br /><textarea id="resmatrix" rows="3" cols="70" readonly></textarea>
 <p>Quaternion [x, y, z, w]
 <br /><textarea id="resq" rows="1" cols="85" readonly></textarea>
-<p>Axis-Angle {[x, y, z], angle (radians)}
+<p>Axis-Angle {[x, y, z], angle<span name="spanangleres"> (radians)</span>}
 <br /><textarea id="resa" rows="1" cols="85" readonly></textarea>
-<p>Axis with angle magnitude (radians) [x, y, z]
+<p>Axis with angle magnitude<span name="spanangleres"> (radians)</span> [x, y, z]
 <br /><textarea id="resr" rows="1" cols="85" readonly></textarea>
-<p>Euler angles (radians)
+<p>Euler angles<span name="spanangleres"> (radians)</span>
 <select id="reseuler" onchange="doOutput()">
 <option value="XYZ" selected>XYZ</option>
 <option value="XZY">XZY</option>
