@@ -1,0 +1,6 @@
+<IfModule mod_expires.c>
+	<FilesMatch "(?i)^.*\.(ico|flv|jpg|jpeg|png|gif|js|css|stl)$">
+		ExpiresActive On
+		ExpiresDefault A2592000
+	</FilesMatch>
+</IfModule>
