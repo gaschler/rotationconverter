@@ -97,11 +97,21 @@ input, select{
 textarea{
     width:100%;
 }
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button{
+	-webkit-appearance:none;
+	appearance:none;
+	margin:0;
+}
+input[type=number]{
+	-moz-appearance:textfield;
+}
 </style>
 </head>
 <body>
 <div class="main">
 <div>
+<form novalidate>
 
 <h1><img src="rotation-icon.svgz" style="height:1.2em; margin-right:0.5em;" onerror="this.onerror=null; this.src='rotation-icon.png';" /> 3D Rotation Converter</h1>
 
@@ -111,31 +121,31 @@ textarea{
 <label><input type="radio" id="iformatrad" name="iformat" value="0" checked onchange="update(inputMode)"/>Radians</label>
 <label><input type="radio" id="iformatdeg" name="iformat" value="1" onchange="update(inputMode)"/>Degrees</label>
 <p class="pi" id="ip0">Rotation matrix
-<br /><span class="dl"></span><input type="text" id="m00" value="1" oninput="update(0)"/>
-<span class="dl2"></span><input type="text" id="m01" value="0" oninput="update(0)"/>
-<span class="dl2"></span><input type="text" id="m02" value="0" oninput="update(0)"/> &nbsp;
-<br /><span class="dl"></span><input type="text" id="m10" value="0" oninput="update(0)"/>
-<span class="dl2"></span><input type="text" id="m11" value="1" oninput="update(0)"/>
-<span class="dl2"></span><input type="text" id="m12" value="0" oninput="update(0)"/> &nbsp;
-<br /><span class="dl"></span><input type="text" id="m20" value="0" oninput="update(0)"/>
-<span class="dl2"></span><input type="text" id="m21" value="0" oninput="update(0)"/>
-<span class="dl2"></span><input type="text" id="m22" value="1" oninput="update(0)"/>
+<br /><span class="dl"></span><input type="number" pattern="\d+(\.\d*)?" id="m00" value="1" oninput="update(0)"/>
+<span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="m01" value="0" oninput="update(0)"/>
+<span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="m02" value="0" oninput="update(0)"/> &nbsp;
+<br /><span class="dl"></span><input type="number" pattern="\d+(\.\d*)?" id="m10" value="0" oninput="update(0)"/>
+<span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="m11" value="1" oninput="update(0)"/>
+<span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="m12" value="0" oninput="update(0)"/> &nbsp;
+<br /><span class="dl"></span><input type="number" pattern="\d+(\.\d*)?" id="m20" value="0" oninput="update(0)"/>
+<span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="m21" value="0" oninput="update(0)"/>
+<span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="m22" value="1" oninput="update(0)"/>
 <p class="pi" id="ip1">Quaternion
 <br />
-<span class="dl">x</span><input type="text" id="q0" value="0" oninput="update(1)"/>
-<span class="dl2">y</span><input type="text" id="q1" value="0" oninput="update(1)"/>
-<span class="dl2">z</span><input type="text" id="q2" value="0" oninput="update(1)"/>
-<span class="dl">w (real part) <input type="text" id="q3" value="1" oninput="update(1)"/></span>
+<span class="dl">x</span><input type="number" pattern="\d+(\.\d*)?" id="q0" value="0" oninput="update(1)"/>
+<span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="q1" value="0" oninput="update(1)"/>
+<span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="q2" value="0" oninput="update(1)"/>
+<span class="dl">w (real part) <input type="number" pattern="\d+(\.\d*)?" id="q3" value="1" oninput="update(1)"/></span>
 <p class="pi" id="ip2">Axis-angle
 <br />
-<span class="dl">Axis x</span><input type="text" id="a0"  value="0" oninput="update(2)"/>
-<span class="dl2">y</span><input type="text" id="a1" value="0" oninput="update(2)"/>
-<span class="dl2">z</span><input type="text" id="a2" value="0" oninput="update(2)"/>
-<span class="dl">Angle<span name="spananglei"> (radians)</span> <input type="text" id="a3" value="0" oninput="update(2)"/></span>
+<span class="dl">Axis x</span><input type="number" pattern="\d+(\.\d*)?" id="a0"  value="0" oninput="update(2)"/>
+<span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="a1" value="0" oninput="update(2)"/>
+<span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="a2" value="0" oninput="update(2)"/>
+<span class="dl">Angle<span name="spananglei"> (radians)</span> <input type="number" pattern="\d+(\.\d*)?" id="a3" value="0" oninput="update(2)"/></span>
 <p class="pi" id="ip3">Axis with angle magnitude<span name="spananglei"> (radians)</span>
-<br /><span class="dl">Axis x</span><input type="text" id="r0" value="0" oninput="update(3)"/>
-<span class="dl2">y</span><input type="text" id="r1" value="0" oninput="update(3)"/>
-<span class="dl2">z</span><input type="text" id="r2" value="0" oninput="update(3)"/>
+<br /><span class="dl">Axis x</span><input type="number" pattern="\d+(\.\d*)?" id="r0" value="0" oninput="update(3)"/>
+<span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="r1" value="0" oninput="update(3)"/>
+<span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="r2" value="0" oninput="update(3)"/>
 <p class="pi" id="ip4">Euler angles of multiple axis rotations<span name="spananglei"> (radians)</span>
 <br />
 <span class="dl"><select id="euler" onchange="update(4)">
@@ -145,9 +155,9 @@ textarea{
 <option value="YZX">YZX</option>
 <option value="ZXY">ZXY</option>
 <option value="ZYX">ZYX</option>
-</select></span><input type="text" id="e0" value="0" oninput="update(4)"/>
-<span class="dl2"></span><input type="text" id="e1" value="0" oninput="update(4)"/>
-<span class="dl2"></span><input type="text" id="e2" value="0" oninput="update(4)"/>
+</select></span><input type="number" pattern="\d+(\.\d*)?" id="e0" value="0" oninput="update(4)"/>
+<span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="e1" value="0" oninput="update(4)"/>
+<span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="e2" value="0" oninput="update(4)"/>
 </div>
 
 <div class="dcol">
@@ -365,6 +375,7 @@ If there are any bugs, please push fixes to the <a href="https://github.com/gasc
 For almost all conversions, <a href="http://threejs.org/docs/index.html#Reference/Math/Quaternion">three.js Math</a> is used internally.
 </div>
 
+</form>
 </div>
 </div>
 </body></html>
