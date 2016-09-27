@@ -4,3 +4,6 @@
 		ExpiresDefault A2592000
 	</FilesMatch>
 </IfModule>
+<IfModule mod_deflate.c>
+	SetOutputFilter DEFLATE
+</IfModule>
