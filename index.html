@@ -4,13 +4,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>3D Rotation Converter</title>
 <style>
-@media all {html{
-    font-family:Garamond, Palatino, Times;
-    font-size:20px;
-    line-height:1.3;
-}}
+@media all {
+	html{
+		font-family:Garamond, Palatino, serif;
+		font-size:18px;
+		line-height:1.3;
+	}
+	.dcol{
+		float:left;
+		width:50%;
+		padding-right:1.5rem;
+		box-sizing:border-box;
+	}
+}
+@media all and (max-width:1200px){
+    html{font-size:16px;}
+}
 @media all and (max-width:1000px){
-    html{font-size:18px;}
+    html{font-size:16px;}
+	.dcol{width:100%;}
 }
 @media all and (max-width:800px){
     html{font-size:15px;}
@@ -21,12 +33,29 @@
 @media all and (max-width:400px){
     html{font-size:11px;}
 }
-select, input, textarea{
+select, input, textarea, label{
+	font-family:"Lucida Console", "DejaVu Sans Mono", monospace;
     font-size:0.9rem;
+    background:#ccc;
+    border:1px solid #888;
+    color:#000;
+    margin:0.1rem;
+}
+textarea{
+	background:#fff;
+    font-weight:bold;
+}
+select, label{
+	font-family:Garamond, Palatino, Times;
+	font-size:1rem;
+	margin:0rem 0.2rem;
+	padding:0.1rem 0.2rem;
+}
+label{
 }
 body{
     margin:1rem auto;
-    max-width:1000px;
+    max-width:1800px; /*1000px;*/
     padding:1rem;
     position:relative;
 }
@@ -47,9 +76,14 @@ input, select{
     background:#eee;
     transition:background 0.6s;
     -webkit-transition:background 0.6s;
+    border:1px solid #fff;
 }
 .phigh{
-    background:#ccc;
+    background:#ddd;
+    border:1px solid #888;
+}
+.phigh input{
+	font-weight:bold;
 }
 .dl, .dl2{
     display:inline-block;
@@ -71,6 +105,7 @@ textarea{
 
 <h1>3D Rotation Converter</h1>
 
+<div class="dcol">
 <h2>Input</h2>
 <p>Input angle format:
 <label><input type="radio" id="iformatrad" name="iformat" value="0" checked onchange="update(inputMode)"/>Radians</label>
@@ -90,13 +125,13 @@ textarea{
 <span class="dl">x</span><input type="text" id="q0" value="0" oninput="update(1)"/>
 <span class="dl2">y</span><input type="text" id="q1" value="0" oninput="update(1)"/>
 <span class="dl2">z</span><input type="text" id="q2" value="0" oninput="update(1)"/>
-<span class="dl">w (real part)</span><input type="text" id="q3" value="1" oninput="update(1)"/>
+<span class="dl">w (real part) <input type="text" id="q3" value="1" oninput="update(1)"/></span>
 <p class="pi" id="ip2">Axis-angle
 <br />
 <span class="dl">Axis x</span><input type="text" id="a0"  value="0" oninput="update(2)"/>
 <span class="dl2">y</span><input type="text" id="a1" value="0" oninput="update(2)"/>
 <span class="dl2">z</span><input type="text" id="a2" value="0" oninput="update(2)"/>
-<span class="dl">Angle<span name="spananglei"> (radians)</span></span><input type="text" id="a3" value="0" oninput="update(2)"/>
+<span class="dl">Angle<span name="spananglei"> (radians)</span> <input type="text" id="a3" value="0" oninput="update(2)"/></span>
 <p class="pi" id="ip3">Axis with angle magnitude<span name="spananglei"> (radians)</span>
 <br /><span class="dl">Axis x</span><input type="text" id="r0" value="0" oninput="update(3)"/>
 <span class="dl2">y</span><input type="text" id="r1" value="0" oninput="update(3)"/>
@@ -113,7 +148,9 @@ textarea{
 </select></span><input type="text" id="e0" value="0" oninput="update(4)"/>
 <span class="dl2"></span><input type="text" id="e1" value="0" oninput="update(4)"/>
 <span class="dl2"></span><input type="text" id="e2" value="0" oninput="update(4)"/>
+</div>
 
+<div class="dcol">
 <h2>Output</h2>
 <script src="three-onlymath.min.js"></script>
 <script>
@@ -306,16 +343,25 @@ function toReal(x){
 </select>
 <br />
 <textarea id="rese" rows="1" cols="70" readonly></textarea>
+</div>
+<br style="clear: left;" />
 
+<div class="dcol">
 <h2>Details</h2>
 <p>
 Please note that rotation formats vary.
 For quaternions, it is not uncommon to denote the real part first.
 Euler angles can be defined with many different combinations (see <a href="https://en.wikipedia.org/wiki/Euler_angles#Tait.E2.80.93Bryan_angles">definition of Cardan angles</a>).
-All input is normalized to unit quaternions and may therefore mapped to different ranges. 
+All input is normalized to unit quaternions and may therefore mapped to different ranges.
+</div>
+
+<div class="dcol">
+<h2>Software</h2>
 <p>
 If there are any bugs, please push fixes to the <a href="https://github.com/gaschler/rotationconverter">Rotation Converter git repo</a>.
 For almost all conversions, <a href="http://threejs.org/docs/index.html#Reference/Math/Quaternion">three.js Math</a> is used internally.
+</div>
+
 </div>
 </div>
 </body></html>
