@@ -123,7 +123,7 @@ var inputMode = 0;
 function matrixToString(m)
 {
     var r = m.elements;
-    var s = '[ '+r[0]+', '+r[4]+', '+r[8]+';\n'+r[1]+', '+r[5]+', '+r[9]+';\n'+r[2]+', '+r[6]+', '+r[10]+' ]';
+    var s = '[ '+toReal(r[0])+', '+toReal(r[4])+', '+toReal(r[8])+';\n'+toReal(r[1])+', '+toReal(r[5])+', '+toReal(r[9])+';\n'+toReal(r[2])+', '+toReal(r[6])+', '+toReal(r[10])+' ]';
     return s;
 }
 function highlight(id)
@@ -144,7 +144,7 @@ function doOutput()
     var m = new THREE.Matrix4();
     m.makeRotationFromQuaternion(q);
     document.getElementById("resmatrix").value = matrixToString(m);
-    document.getElementById("resq").value = '[ '+q.x+', '+q.y+', '+q.z+', '+q.w+' ]';
+    document.getElementById("resq").value = '[ '+toReal(q.x)+', '+toReal(q.y)+', '+toReal(q.z)+', '+toReal(q.w)+' ]';
     
     var axis = [0, 0, 0];
     var angle = 2 * Math.acos(q.w);
@@ -162,14 +162,13 @@ function doOutput()
         axis[1] = q.y / s;
         axis[2] = q.z / s;
     }
-    document.getElementById("resa").value = '{ [ '+axis.toString()+' ], '+toAngle(angle)+' }';
+    document.getElementById("resa").value = '{ [ '+toReal(axis[0])+', '+toReal(axis[1])+', '+toReal(axis[2])+' ], '+toReal(toAngle(angle))+' }';
     
-    var r = [toAngle(axis[0] * angle), toAngle(axis[1] * angle), toAngle(axis[2] * angle)];
-    document.getElementById("resr").value = '[ '+r.toString()+' ]';
+    document.getElementById("resr").value = '[ '+toReal(toAngle(axis[0] * angle))+', '+toReal(toAngle(axis[1] * angle))+', '+toReal(toAngle(axis[2] * angle))+' ]';
     
     var eu = new THREE.Euler();
     eu.setFromRotationMatrix(m, document.getElementById("reseuler").value);
-    document.getElementById("rese").value = '[ '+toAngle(eu.toArray()[0])+', '+toAngle(eu.toArray()[1])+', '+toAngle(eu.toArray()[2])+' ]';
+    document.getElementById("rese").value = '[ '+toReal(toAngle(eu.toArray()[0]))+', '+toReal(toAngle(eu.toArray()[1]))+', '+toReal(toAngle(eu.toArray()[2]))+' ]';
 
     var spansi = document.getElementsByName('spananglei');
     for (var i = 0; i < spansi.length; i++)
@@ -273,6 +272,16 @@ function toAngle(x)
     {
         return x;
     }
+}
+function toReal(x){
+	if (!isNaN(parseFloat(x)) && isFinite(parseFloat(x)))
+	{
+		return parseFloat(parseFloat(x).toFixed(7));
+	}
+	else
+	{
+		return x;
+	}
 }
 </script>
 <p>Output angle format:
