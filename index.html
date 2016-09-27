@@ -2,6 +2,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="rotation-icon.png">
+<link rel="apple-touch-icon" type="image/png" href="rotation-icon.png">
 <title>3D Rotation Converter</title>
 <style>
 @media all {
@@ -20,7 +22,7 @@
 @media all and (max-width:1200px){
     html{font-size:16px;}
 }
-@media all and (max-width:1000px){
+@media all and (max-width:980px){
     html{font-size:16px;}
 	.dcol{width:100%;}
 }
@@ -36,8 +38,8 @@
 select, input, textarea, label{
 	font-family:"Lucida Console", "DejaVu Sans Mono", monospace;
     font-size:0.9rem;
-    background:#ccc;
-    border:1px solid #888;
+    background:#dfdff5;
+    border:1px solid #323296;
     color:#000;
     margin:0.1rem;
 }
@@ -54,9 +56,10 @@ select, label{
 label{
 }
 body{
-    margin:1rem auto;
-    max-width:1800px; /*1000px;*/
-    padding:1rem;
+    margin:0.5rem auto;
+    max-width:1800px;
+    padding:1.5rem;
+    padding-right:0rem;
     position:relative;
 }
 .pi, textarea{
@@ -65,8 +68,7 @@ body{
 input{
     width:5rem;
 }
-input[type="radio"]
-{
+input[type="radio"]{
     width:auto;
 }
 input, select{
@@ -74,13 +76,12 @@ input, select{
 }
 .pi{
     background:#eee;
-    transition:background 0.6s;
-    -webkit-transition:background 0.6s;
+    transition:border-color 0.6s;
+    -webkit-transition:border-color 0.6s;
     border:1px solid #fff;
 }
 .phigh{
-    background:#ddd;
-    border:1px solid #888;
+    border:1px solid #323296;
 }
 .phigh input{
 	font-weight:bold;
@@ -103,11 +104,11 @@ textarea{
 <div class="main">
 <div>
 
-<h1>3D Rotation Converter</h1>
+<h1><img src="rotation-icon.svg" style="height:1.2em; margin-right:0.5em;" onerror="this.onerror=null; this.src='rotation-icon.png';" /> 3D Rotation Converter</h1>
 
 <div class="dcol">
 <h2>Input</h2>
-<p>Input angle format:
+<p>Input angle format
 <label><input type="radio" id="iformatrad" name="iformat" value="0" checked onchange="update(inputMode)"/>Radians</label>
 <label><input type="radio" id="iformatdeg" name="iformat" value="1" onchange="update(inputMode)"/>Degrees</label>
 <p class="pi" id="ip0">Rotation matrix
@@ -321,7 +322,7 @@ function toReal(x){
 	}
 }
 </script>
-<p>Output angle format:
+<p>Output angle format
 <label><input type="radio" id="resformatrad" name="resformat" value="0" checked onchange="doOutput()"/>Radians</label>
 <label><input type="radio" id="resformatdeg" name="resformat" value="1" onchange="doOutput()"/>Degrees</label>
 <p>Rotation matrix
@@ -353,11 +354,14 @@ Please note that rotation formats vary.
 For quaternions, it is not uncommon to denote the real part first.
 Euler angles can be defined with many different combinations (see <a href="https://en.wikipedia.org/wiki/Euler_angles#Tait.E2.80.93Bryan_angles">definition of Cardan angles</a>).
 All input is normalized to unit quaternions and may therefore mapped to different ranges.
+The converter can therefore also be used to normalize a rotation matrix or a quaternion.
+Results are rounded to seven digits.
 </div>
 
 <div class="dcol">
 <h2>Software</h2>
 <p>
+This calculator for 3D rotations is open-source software.
 If there are any bugs, please push fixes to the <a href="https://github.com/gaschler/rotationconverter">Rotation Converter git repo</a>.
 For almost all conversions, <a href="http://threejs.org/docs/index.html#Reference/Math/Quaternion">three.js Math</a> is used internally.
 </div>
