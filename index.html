@@ -216,7 +216,7 @@ function doOutput()
     
     var eu = new THREE.Euler();
     eu.setFromRotationMatrix(m, document.getElementById("reseuler").value);
-    document.getElementById("rese").value = '[ '+toReal(toAngle(eu.toArray()[0]))+', '+toReal(toAngle(eu.toArray()[1]))+', '+toReal(toAngle(eu.toArray()[2]))+' ]';
+    document.getElementById("rese").value = '[ x: '+toReal(toAngle(eu.toArray()[0]))+', y: '+toReal(toAngle(eu.toArray()[1]))+', z: '+toReal(toAngle(eu.toArray()[2]))+' ]';
 
     var spansi = document.getElementsByName('spananglei');
     for (var i = 0; i < spansi.length; i++)
