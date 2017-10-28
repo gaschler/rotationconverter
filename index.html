@@ -159,6 +159,27 @@ input[type=number]{
 <span class="dl2">x</span><input type="number" pattern="\d+(\.\d*)?" id="e0" value="0" oninput="update(4)"/>
 <span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="e1" value="0" oninput="update(4)"/>
 <span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="e2" value="0" oninput="update(4)"/>
+<p class="pi" id="ip5">Triad of points, <b>P</b><sub>1</sub>, <b>P</b><sub>2</sub>, <b>P</b><sub>3</sub>, 
+such that 
+<b>X</b> &#x2225; (<b>P</b><sub>2</sub>&minus;<b>P</b><sub>1</sub>),  &nbsp;
+<b>Z</b> &#x2225; <b>X</b> &times; (<b>P</b><sub>3</sub>&minus;<b>P</b><sub>1</sub>), &nbsp;and 
+<b>Y</b> &#x2225; <b>Z</b> &times; <b>X</b>.
+<br />
+<b>P</b><sub>1</sub>:
+<span class="dl2">x</span><input type="number" pattern="\d+(\.\d*)?" id="p1x" value="0" oninput="update(5)"/>
+<span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="p1y" value="0" oninput="update(5)"/>
+<span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="p1z" value="0" oninput="update(5)"/>
+<br />
+<b>P</b><sub>2</sub>:
+<span class="dl2">x</span><input type="number" pattern="\d+(\.\d*)?" id="p2x" value="1" oninput="update(5)"/>
+<span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="p2y" value="0" oninput="update(5)"/>
+<span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="p2z" value="0" oninput="update(5)"/>
+<br />
+<b>P</b><sub>3</sub>:
+<span class="dl2">x</span><input type="number" pattern="\d+(\.\d*)?" id="p3x" value="0" oninput="update(5)"/>
+<span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="p3y" value="1" oninput="update(5)"/>
+<span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="p3z" value="0" oninput="update(5)"/>
+<br/>
 </div>
 
 <div class="dcol">
@@ -295,6 +316,31 @@ function update(mode)
             toRad(document.getElementById("e2").value),
             document.getElementById("euler").value);
         q.setFromEuler(e);
+    }
+    else if (inputMode ==5)
+    {
+        var m = new THREE.Matrix4();
+        var p1x = document.getElementById("p1x").value;
+        var p1y = document.getElementById("p1y").value;
+        var p1z = document.getElementById("p1z").value;
+        var p2x = document.getElementById("p2x").value;
+        var p2y = document.getElementById("p2y").value;
+        var p2z = document.getElementById("p2z").value;
+        var p3x = document.getElementById("p3x").value;
+        var p3y = document.getElementById("p3y").value;
+        var p3z = document.getElementById("p3z").value;
+        var p1 = new THREE.Vector3(p1x, p1y, p1z);
+        var p2 = new THREE.Vector3(p2x, p2y, p2z);
+        var p3 = new THREE.Vector3(p3x, p3y, p3z);
+        var x = new THREE.Vector3();
+        var y = new THREE.Vector3();
+        var z = new THREE.Vector3();
+        x.subVectors(p2, p1).normalize();
+        y.subVectors(p3, p1);
+        z.crossVectors(x, y).normalize();
+        y.crossVectors(z, x).normalize();
+        m.set(x.x, y.x, z.x, 1, x.y, y.y, z.y, 1, x.z, y.z, z.z, 1, 0, 0, 0, 1);
+        q.setFromRotationMatrix(m);
     }
     setQ(q);
     highlight('ip' + inputMode);
