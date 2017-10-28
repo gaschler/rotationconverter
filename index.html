@@ -171,7 +171,10 @@ var inputMode = 0;
 function matrixToString(m)
 {
     var r = m.elements;
-    var s = '[ '+toReal(r[0])+', '+toReal(r[4])+', '+toReal(r[8])+';\n'+toReal(r[1])+', '+toReal(r[5])+', '+toReal(r[9])+';\n'+toReal(r[2])+', '+toReal(r[6])+', '+toReal(r[10])+' ]';
+    var s = 
+         '[ ' +pmOneToStr(r[0],7)+', '+pmOneToStr(r[4],7)+', '+pmOneToStr(r[8],7)+';\n'
+        +'  ' +pmOneToStr(r[1],7)+', '+pmOneToStr(r[5],7)+', '+pmOneToStr(r[9],7)+';\n'
+        +'  ' +pmOneToStr(r[2],7)+', '+pmOneToStr(r[6],7)+', '+pmOneToStr(r[10],7)+' ]';
     return s;
 }
 function highlight(id)
@@ -325,6 +328,18 @@ function toReal(x){
 	if (!isNaN(parseFloat(x)) && isFinite(parseFloat(x)))
 	{
 		return parseFloat(parseFloat(x).toFixed(7));
+	}
+	else
+	{
+		return x;
+	}
+}
+function pmOneToStr(x, p){
+	if (!isNaN(parseFloat(x)) && isFinite(parseFloat(x)))
+	{
+		var s = x.toFixed(p);
+                if (x >=0) s = ' ' + s;
+                return s;
 	}
 	else
 	{
