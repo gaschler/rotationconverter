@@ -172,9 +172,9 @@ function matrixToString(m)
 {
     var r = m.elements;
     var s = 
-         '[ ' +pmOneToStr(r[0],7)+', '+pmOneToStr(r[4],7)+', '+pmOneToStr(r[8],7)+';\n'
-        +'  ' +pmOneToStr(r[1],7)+', '+pmOneToStr(r[5],7)+', '+pmOneToStr(r[9],7)+';\n'
-        +'  ' +pmOneToStr(r[2],7)+', '+pmOneToStr(r[6],7)+', '+pmOneToStr(r[10],7)+' ]';
+         '[ ' +toFixedWidth(r[0])+', '+toFixedWidth(r[4])+', '+toFixedWidth(r[8])+';\n'
+        +'  ' +toFixedWidth(r[1])+', '+toFixedWidth(r[5])+', '+toFixedWidth(r[9])+';\n'
+        +'  ' +toFixedWidth(r[2])+', '+toFixedWidth(r[6])+', '+toFixedWidth(r[10])+' ]';    
     return s;
 }
 function highlight(id)
@@ -334,11 +334,11 @@ function toReal(x){
 		return x;
 	}
 }
-function pmOneToStr(x, p){
+function toFixedWidth(x){
 	if (!isNaN(parseFloat(x)) && isFinite(parseFloat(x)))
 	{
-		var s = x.toFixed(p);
-                if (x >=0) s = ' ' + s;
+		var s = x.toFixed(7);
+                if (x >= 0) s = ' ' + s;
                 return s;
 	}
 	else
