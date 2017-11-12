@@ -159,6 +159,27 @@ input[type=number]{
 <span class="dl2">x</span><input type="number" pattern="\d+(\.\d*)?" id="e0" value="0" oninput="update(4)"/>
 <span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="e1" value="0" oninput="update(4)"/>
 <span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="e2" value="0" oninput="update(4)"/>
+<p class="pi" id="ip5">Triple of points, P, Q, R, 
+such that 
+X &#x2225; (Q&minus;P),  &nbsp;
+Z &#x2225; X &times; (R&minus;P), &nbsp;and 
+Y &#x2225; Z &times; X.
+<br />
+P:
+<span class="dl2">x</span><input type="number" pattern="\d+(\.\d*)?" id="Px" value="0" oninput="update(5)"/>
+<span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="Py" value="0" oninput="update(5)"/>
+<span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="Pz" value="0" oninput="update(5)"/>
+<br />
+Q:
+<span class="dl2">x</span><input type="number" pattern="\d+(\.\d*)?" id="Qx" value="1" oninput="update(5)"/>
+<span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="Qy" value="0" oninput="update(5)"/>
+<span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="Qz" value="0" oninput="update(5)"/>
+<br />
+R:
+<span class="dl2">x</span><input type="number" pattern="\d+(\.\d*)?" id="Rx" value="0" oninput="update(5)"/>
+<span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="Ry" value="1" oninput="update(5)"/>
+<span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="Rz" value="0" oninput="update(5)"/>
+<br/>
 </div>
 
 <div class="dcol">
@@ -299,8 +320,31 @@ function update(mode)
             document.getElementById("euler").value);
         q.setFromEuler(e);
     }
+    else if (inputMode ==5)
+    {
+        var m = new THREE.Matrix4();
+        var P = getVector("P");
+        var Q = getVector("Q");
+        var R = getVector("R");
+        var x = new THREE.Vector3();
+        var y = new THREE.Vector3();
+        var z = new THREE.Vector3();
+        x.subVectors(Q, P).normalize();
+        y.subVectors(R, P);
+        z.crossVectors(x, y).normalize();
+        y.crossVectors(z, x).normalize();
+        m.set(x.x, y.x, z.x, 1, x.y, y.y, z.y, 1, x.z, y.z, z.z, 1, 0, 0, 0, 1);
+        q.setFromRotationMatrix(m);
+    }
     setQ(q);
     highlight('ip' + inputMode);
+}
+function getVector(root)
+{
+    vx = document.getElementById(root + "x").value;
+    vy = document.getElementById(root + "y").value;
+    vz = document.getElementById(root + "z").value;
+    return new THREE.Vector3(vx, vy, vz);
 }
 function toRad(x)
 {
