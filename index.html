@@ -159,10 +159,10 @@ input[type=number]{
 <span class="dl2">x</span><input type="number" pattern="\d+(\.\d*)?" id="e0" value="0" oninput="update(4)"/>
 <span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="e1" value="0" oninput="update(4)"/>
 <span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="e2" value="0" oninput="update(4)"/>
-<p class="pi" id="ip5">Triple of points, P, Q, R, 
-such that 
+<p class="pi" id="ip5">Triple of points, P, Q, R,
+such that
 X &#x2225; (Q&minus;P),  &nbsp;
-Z &#x2225; X &times; (R&minus;P), &nbsp;and 
+Z &#x2225; X &times; (R&minus;P), &nbsp;and
 Y &#x2225; Z &times; X.
 <br />
 P:
@@ -192,10 +192,10 @@ var inputMode = 0;
 function matrixToString(m)
 {
     var r = m.elements;
-    var s = 
+    var s =
          '[ ' +toFixedWidth(r[0])+', '+toFixedWidth(r[4])+', '+toFixedWidth(r[8])+';\n'
         +'  ' +toFixedWidth(r[1])+', '+toFixedWidth(r[5])+', '+toFixedWidth(r[9])+';\n'
-        +'  ' +toFixedWidth(r[2])+', '+toFixedWidth(r[6])+', '+toFixedWidth(r[10])+' ]';    
+        +'  ' +toFixedWidth(r[2])+', '+toFixedWidth(r[6])+', '+toFixedWidth(r[10])+' ]';
     return s;
 }
 function highlight(id)
@@ -217,7 +217,7 @@ function doOutput()
     m.makeRotationFromQuaternion(q);
     document.getElementById("resmatrix").value = matrixToString(m);
     document.getElementById("resq").value = '[ '+toReal(q.x)+', '+toReal(q.y)+', '+toReal(q.z)+', '+toReal(q.w)+' ]';
-    
+
     var axis = [0, 0, 0];
     var angle = 2 * Math.acos(q.w);
     if (1 - (q.w * q.w) < 0.000001)
@@ -235,9 +235,9 @@ function doOutput()
         axis[2] = q.z / s;
     }
     document.getElementById("resa").value = '{ [ '+toReal(axis[0])+', '+toReal(axis[1])+', '+toReal(axis[2])+' ], '+toReal(toAngle(angle))+' }';
-    
+
     document.getElementById("resr").value = '[ '+toReal(toAngle(axis[0] * angle))+', '+toReal(toAngle(axis[1] * angle))+', '+toReal(toAngle(axis[2] * angle))+' ]';
-    
+
     var eu = new THREE.Euler();
     eu.setFromRotationMatrix(m, document.getElementById("reseuler").value);
     document.getElementById("rese").value = '[ x: '+toReal(toAngle(eu.toArray()[0]))+', y: '+toReal(toAngle(eu.toArray()[1]))+', z: '+toReal(toAngle(eu.toArray()[2]))+' ]';
@@ -254,7 +254,7 @@ function doOutput()
             spansi[i].textContent = ' (degrees)';
         }
     }
-     
+
     var spansres = document.getElementsByName('spanangleres');
     for (var i = 0; i < spansres.length; i++)
     {
@@ -289,15 +289,15 @@ function update(mode)
     }
     else if (inputMode == 1)
     {
-        q = new THREE.Quaternion(document.getElementById("q0").value, 
-            document.getElementById("q1").value, 
-            document.getElementById("q2").value, 
+        q = new THREE.Quaternion(document.getElementById("q0").value,
+            document.getElementById("q1").value,
+            document.getElementById("q2").value,
             document.getElementById("q3").value);
     }
     else if (inputMode == 2)
     {
         q = new THREE.Quaternion();
-        var axis = new THREE.Vector3(document.getElementById("a0").value, 
+        var axis = new THREE.Vector3(document.getElementById("a0").value,
             document.getElementById("a1").value,
             document.getElementById("a2").value);
         axis.normalize();
@@ -305,7 +305,7 @@ function update(mode)
     }
     else if (inputMode == 3)
     {
-        var axis = new THREE.Vector3(document.getElementById("r0").value, 
+        var axis = new THREE.Vector3(document.getElementById("r0").value,
             document.getElementById("r1").value,
             document.getElementById("r2").value);
         var angle = toRad(axis.length());
@@ -314,7 +314,7 @@ function update(mode)
     }
     else if (inputMode == 4)
     {
-        var e = new THREE.Euler(toRad(document.getElementById("e0").value), 
+        var e = new THREE.Euler(toRad(document.getElementById("e0").value),
             toRad(document.getElementById("e1").value),
             toRad(document.getElementById("e2").value),
             document.getElementById("euler").value);
@@ -432,7 +432,7 @@ Results are rounded to seven digits.
 <p>
 This calculator for 3D rotations is open-source software.
 If there are any bugs, please push fixes to the <a href="https://github.com/gaschler/rotationconverter">Rotation Converter git repo</a>.
-For almost all conversions, <a href="http://threejs.org/docs/index.html#Reference/Math/Quaternion">three.js Math</a> is used internally.
+For almost all conversions, <a href="https://threejs.org/docs/index.html#api/math/Quaternion">three.js Math</a> is used internally.
 </div>
 
 </form>
