@@ -3,8 +3,6 @@ A simple HTML+JavaScript page to convert between different 3D rotation formats, 
 
 __Run http://www.andre-gaschler.com/rotationconverter/ directly to convert rotations online__
 
-An experimental Android app is available in the [releases](https://github.com/gaschler/rotationconverter/releases)
-
 ## Dependencies
 Most of the conversion is calculated with the [three.js library](https://github.com/mrdoob/three.js) (which is also MIT-licensed).
 
