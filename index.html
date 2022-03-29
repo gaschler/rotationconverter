@@ -121,31 +121,31 @@ input[type=number]{
 <label><input type="radio" id="iformatrad" name="iformat" value="0" checked onchange="update(inputMode)"/>Radians</label>
 <label><input type="radio" id="iformatdeg" name="iformat" value="1" onchange="update(inputMode)"/>Degrees</label>
 <p class="pi" id="ip0">Rotation matrix
-<br /><span class="dl"></span><input type="number" pattern="\d+(\.\d*)?" id="m00" value="1" oninput="update(0)"/>
-<span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="m01" value="0" oninput="update(0)"/>
-<span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="m02" value="0" oninput="update(0)"/> &nbsp;
-<br /><span class="dl"></span><input type="number" pattern="\d+(\.\d*)?" id="m10" value="0" oninput="update(0)"/>
-<span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="m11" value="1" oninput="update(0)"/>
-<span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="m12" value="0" oninput="update(0)"/> &nbsp;
-<br /><span class="dl"></span><input type="number" pattern="\d+(\.\d*)?" id="m20" value="0" oninput="update(0)"/>
-<span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="m21" value="0" oninput="update(0)"/>
-<span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="m22" value="1" oninput="update(0)"/>
+<br /><span class="dl"></span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="m00" value="1" oninput="update(0)"/>
+<span class="dl2"></span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="m01" value="0" oninput="update(0)"/>
+<span class="dl2"></span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="m02" value="0" oninput="update(0)"/> &nbsp;
+<br /><span class="dl"></span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="m10" value="0" oninput="update(0)"/>
+<span class="dl2"></span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="m11" value="1" oninput="update(0)"/>
+<span class="dl2"></span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="m12" value="0" oninput="update(0)"/> &nbsp;
+<br /><span class="dl"></span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="m20" value="0" oninput="update(0)"/>
+<span class="dl2"></span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="m21" value="0" oninput="update(0)"/>
+<span class="dl2"></span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="m22" value="1" oninput="update(0)"/>
 <p class="pi" id="ip1">Quaternion
 <br />
-<span class="dl">x</span><input type="number" pattern="\d+(\.\d*)?" id="q0" value="0" oninput="update(1)"/>
-<span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="q1" value="0" oninput="update(1)"/>
-<span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="q2" value="0" oninput="update(1)"/>
-<span class="dl">w (real part) <input type="number" pattern="\d+(\.\d*)?" id="q3" value="1" oninput="update(1)"/></span>
+<span class="dl">x</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="q0" value="0" oninput="update(1)"/>
+<span class="dl2">y</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="q1" value="0" oninput="update(1)"/>
+<span class="dl2">z</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="q2" value="0" oninput="update(1)"/>
+<span class="dl">w (real part) <input type="string" pattern="\s*\d+(\.\d*)?\s*" id="q3" value="1" oninput="update(1)"/></span>
 <p class="pi" id="ip2">Axis-angle
 <br />
-<span class="dl">Axis x</span><input type="number" pattern="\d+(\.\d*)?" id="a0"  value="0" oninput="update(2)"/>
-<span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="a1" value="0" oninput="update(2)"/>
-<span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="a2" value="0" oninput="update(2)"/>
-<span class="dl">Angle<span name="spananglei"> (radians)</span> <input type="number" pattern="\d+(\.\d*)?" id="a3" value="0" oninput="update(2)"/></span>
+<span class="dl">Axis x</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="a0"  value="0" oninput="update(2)"/>
+<span class="dl2">y</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="a1" value="0" oninput="update(2)"/>
+<span class="dl2">z</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="a2" value="0" oninput="update(2)"/>
+<span class="dl">Angle<span name="spananglei"> (radians)</span> <input type="string" pattern="\s*\d+(\.\d*)?\s*" id="a3" value="0" oninput="update(2)"/></span>
 <p class="pi" id="ip3">Axis with angle magnitude<span name="spananglei"> (radians)</span>
-<br /><span class="dl">Axis x</span><input type="number" pattern="\d+(\.\d*)?" id="r0" value="0" oninput="update(3)"/>
-<span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="r1" value="0" oninput="update(3)"/>
-<span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="r2" value="0" oninput="update(3)"/>
+<br /><span class="dl">Axis x</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="r0" value="0" oninput="update(3)"/>
+<span class="dl2">y</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="r1" value="0" oninput="update(3)"/>
+<span class="dl2">z</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="r2" value="0" oninput="update(3)"/>
 <p class="pi" id="ip4">Euler angles of multiple axis rotations<span name="spananglei"> (radians)</span>
 <br />
 <span class="dl"><select id="euler" onchange="update(4)">
@@ -156,9 +156,9 @@ input[type=number]{
 <option value="ZXY">ZXY</option>
 <option value="ZYX">ZYX</option>
 </select></span>
-<span class="dl2">x</span><input type="number" pattern="\d+(\.\d*)?" id="e0" value="0" oninput="update(4)"/>
-<span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="e1" value="0" oninput="update(4)"/>
-<span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="e2" value="0" oninput="update(4)"/>
+<span class="dl2">x</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="e0" value="0" oninput="update(4)"/>
+<span class="dl2">y</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="e1" value="0" oninput="update(4)"/>
+<span class="dl2">z</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="e2" value="0" oninput="update(4)"/>
 <p class="pi" id="ip5">Triple of points, P, Q, R, 
 such that 
 X &#x2225; (Q&minus;P),  &nbsp;
@@ -166,19 +166,19 @@ Z &#x2225; X &times; (R&minus;P), &nbsp;and
 Y &#x2225; Z &times; X.
 <br />
 P:
-<span class="dl2">x</span><input type="number" pattern="\d+(\.\d*)?" id="Px" value="0" oninput="update(5)"/>
-<span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="Py" value="0" oninput="update(5)"/>
-<span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="Pz" value="0" oninput="update(5)"/>
+<span class="dl2">x</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="Px" value="0" oninput="update(5)"/>
+<span class="dl2">y</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="Py" value="0" oninput="update(5)"/>
+<span class="dl2">z</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="Pz" value="0" oninput="update(5)"/>
 <br />
 Q:
-<span class="dl2">x</span><input type="number" pattern="\d+(\.\d*)?" id="Qx" value="1" oninput="update(5)"/>
-<span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="Qy" value="0" oninput="update(5)"/>
-<span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="Qz" value="0" oninput="update(5)"/>
+<span class="dl2">x</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="Qx" value="1" oninput="update(5)"/>
+<span class="dl2">y</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="Qy" value="0" oninput="update(5)"/>
+<span class="dl2">z</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="Qz" value="0" oninput="update(5)"/>
 <br />
 R:
-<span class="dl2">x</span><input type="number" pattern="\d+(\.\d*)?" id="Rx" value="0" oninput="update(5)"/>
-<span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="Ry" value="1" oninput="update(5)"/>
-<span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="Rz" value="0" oninput="update(5)"/>
+<span class="dl2">x</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="Rx" value="0" oninput="update(5)"/>
+<span class="dl2">y</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="Ry" value="1" oninput="update(5)"/>
+<span class="dl2">z</span><input type="string" pattern="\s*\d+(\.\d*)?\s*" id="Rz" value="0" oninput="update(5)"/>
 <br/>
 </div>
 
@@ -189,6 +189,13 @@ R:
 var quat = new THREE.Quaternion();
 var highlightedId = 'ip0';
 var inputMode = 0;
+function getField(id)
+{
+    var val = document.getElementById(id).value;
+    val = val.trim()
+    document.getElementById(id).value = val
+    return val
+}
 function matrixToString(m)
 {
     var r = m.elements;
@@ -239,7 +246,7 @@ function doOutput()
     document.getElementById("resr").value = '[ '+toReal(toAngle(axis[0] * angle))+', '+toReal(toAngle(axis[1] * angle))+', '+toReal(toAngle(axis[2] * angle))+' ]';
     
     var eu = new THREE.Euler();
-    eu.setFromRotationMatrix(m, document.getElementById("reseuler").value);
+    eu.setFromRotationMatrix(m, getField("reseuler"));
     document.getElementById("rese").value = '[ x: '+toReal(toAngle(eu.toArray()[0]))+', y: '+toReal(toAngle(eu.toArray()[1]))+', z: '+toReal(toAngle(eu.toArray()[2]))+' ]';
 
     var spansi = document.getElementsByName('spananglei');
@@ -275,49 +282,49 @@ function update(mode)
     if (inputMode == 0)
     {
         var m = new THREE.Matrix4();
-        var m00 = document.getElementById("m00").value;
-        var m01 = document.getElementById("m01").value;
-        var m02 = document.getElementById("m02").value;
-        var m10 = document.getElementById("m10").value;
-        var m11 = document.getElementById("m11").value;
-        var m12 = document.getElementById("m12").value;
-        var m20 = document.getElementById("m20").value;
-        var m21 = document.getElementById("m21").value;
-        var m22 = document.getElementById("m22").value;
+        var m00 = getField("m00");
+        var m01 = getField("m01");
+        var m02 = getField("m02");
+        var m10 = getField("m10");
+        var m11 = getField("m11");
+        var m12 = getField("m12");
+        var m20 = getField("m20");
+        var m21 = getField("m21");
+        var m22 = getField("m22");
         m.set(m00, m01, m02, 1, m10, m11, m12, 1, m20, m21, m22, 1, 0, 0, 0, 1);
         q.setFromRotationMatrix(m);
     }
     else if (inputMode == 1)
     {
-        q = new THREE.Quaternion(document.getElementById("q0").value, 
-            document.getElementById("q1").value, 
-            document.getElementById("q2").value, 
-            document.getElementById("q3").value);
+        q = new THREE.Quaternion(getField("q0"),
+            getField("q1"),
+            getField("q2"),
+            getField("q3"));
     }
     else if (inputMode == 2)
     {
         q = new THREE.Quaternion();
-        var axis = new THREE.Vector3(document.getElementById("a0").value, 
-            document.getElementById("a1").value,
-            document.getElementById("a2").value);
+        var axis = new THREE.Vector3(getField("a0"),
+            getField("a1"),
+            getField("a2"));
         axis.normalize();
-        q.setFromAxisAngle(axis, toRad(document.getElementById("a3").value));
+        q.setFromAxisAngle(axis, toRad(getField("a3")));
     }
     else if (inputMode == 3)
     {
-        var axis = new THREE.Vector3(document.getElementById("r0").value, 
-            document.getElementById("r1").value,
-            document.getElementById("r2").value);
+        var axis = new THREE.Vector3(getField("r0"), 
+            getField("r1"),
+            getField("r2"));
         var angle = toRad(axis.length());
         axis.normalize();
         q.setFromAxisAngle(axis, angle);
     }
     else if (inputMode == 4)
     {
-        var e = new THREE.Euler(toRad(document.getElementById("e0").value), 
-            toRad(document.getElementById("e1").value),
-            toRad(document.getElementById("e2").value),
-            document.getElementById("euler").value);
+        var e = new THREE.Euler(toRad(getField("e0")),
+            toRad(getField("e1")),
+            toRad(getField("e2")),
+            getField("euler"));
         q.setFromEuler(e);
     }
     else if (inputMode ==5)
@@ -341,9 +348,9 @@ function update(mode)
 }
 function getVector(root)
 {
-    vx = document.getElementById(root + "x").value;
-    vy = document.getElementById(root + "y").value;
-    vz = document.getElementById(root + "z").value;
+    vx = getField(root + "x");
+    vy = getField(root + "y");
+    vz = getField(root + "z");
     return new THREE.Vector3(vx, vy, vz);
 }
 function toRad(x)
