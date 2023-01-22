@@ -120,9 +120,11 @@ input[type=number]{
 <p>Input angle format
 <label><input type="radio" id="iformatrad" name="iformat" value="0" checked onchange="update(inputMode)"/>Radians</label>
 <label><input type="radio" id="iformatdeg" name="iformat" value="1" onchange="update(inputMode)"/>Degrees</label>
-<!-- <p>Quaternion Format
-<label><input type="radio" id="XYZW" name="iformat_quat" value="0" onchange="update(inputMode)"/>[W,X,Y,Z]</label>
-<label><input type="radio" id="WXYZ" name="iformat_quat" value="1" checked onchange="update(inputMode)"/>[X,Y,Z,W]</label> -->
+<span class="dl"><select id="quat_format" onchange="change_quat()">
+<option value="XYZW" selected>X,Y,Z,W</option>
+<option value="WXYZ">W,X,Y,Z</option>
+</select>
+</span>
 <p class="pi" id="ip0">Rotation matrix
 <br /><span class="dl"></span><input type="number" pattern="\d+(\.\d*)?" id="m00" value="1" oninput="update(0)"/>
 <span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="m01" value="0" oninput="update(0)"/>
@@ -134,11 +136,12 @@ input[type=number]{
 <span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="m21" value="0" oninput="update(0)"/>
 <span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="m22" value="1" oninput="update(0)"/>
 <p class="pi" id="ip1">Quaternion
-<br />
-<span class="dl">x</span><input type="number" pattern="\d+(\.\d*)?" id="q0" value="0" oninput="update(1)"/>
+<br />  
+<span class="dl2" id="q0_name">x</span><input type="number" pattern="\d+(\.\d*)?" id="q0" value="0" oninput="update(1)"/>
 <span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="q1" value="0" oninput="update(1)"/>
 <span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="q2" value="0" oninput="update(1)"/>
-<span class="dl">w (real part) <input type="number" pattern="\d+(\.\d*)?" id="q3" value="1" oninput="update(1)"/></span>
+<span class="dl2" id="q3_name">w (real part)</span><input type="number" pattern="\d+(\.\d*)?" id="q3" value="1" oninput="update(1)"/>
+</p>
 <p class="pi" id="ip2">Axis-angle
 <br />
 <span class="dl">Axis x</span><input type="number" pattern="\d+(\.\d*)?" id="a0"  value="0" oninput="update(2)"/>
@@ -184,7 +187,7 @@ R:
 <span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="Rz" value="0" oninput="update(5)"/>
 <br/>
 
-<p class="pi" id="ip5"> Automatic input cast (Quaternion, Rotation Matrix, Euler ngles)
+<p class="pi" id="ip5"> Automatic input cast (Quaternion, Rotation Matrix, Euler Angles)
 <br />
 <textarea id="inputTextField" rows="10" oninput="updateInput()"></textarea> 
 <br/>
@@ -222,9 +225,21 @@ function doOutput()
 {
     var q = quat;
     var m = new THREE.Matrix4();
+
+    var qf = document.getElementById("quat_format");
+    var qf_val = qf.options[qf.selectedIndex].value;
+
     m.makeRotationFromQuaternion(q);
     document.getElementById("resmatrix").value = matrixToString(m);
-    document.getElementById("resq").value = '[ '+toReal(q.x)+', '+toReal(q.y)+', '+toReal(q.z)+', '+toReal(q.w)+' ]';
+
+    if (qf_val == 'XYZW')
+    {
+        document.getElementById("resq").value = '[ '+toFixedWidth(q.x)+', '+toFixedWidth(q.y)+', '+toFixedWidth(q.z)+', '+toFixedWidth(q.w)+' ]';
+    }
+    else if (qf_val == 'WXYZ')
+    {
+        document.getElementById("resq").value = '[ '+toFixedWidth(q.w)+', '+toFixedWidth(q.x)+', '+toFixedWidth(q.y)+', '+toFixedWidth(q.z)+' ]';
+    }
     
     var axis = [0, 0, 0];
     var angle = 2 * Math.acos(q.w);
@@ -425,15 +440,29 @@ function updateInput()
 {
     var f = castInput();
     if (f.length == 4)
-    {
-        // write list elements in the quaternion input fields
-        document.getElementById("q0").value = toReal(f[0]);
-        document.getElementById("q1").value = toReal(f[1]);
-        document.getElementById("q2").value = toReal(f[2]);
-        document.getElementById("q3").value = toReal(f[3]);
-        // call update function for quaternion input
-        update(1);
-
+    {   
+        var qf = document.getElementById("quat_format");
+        var qf_val = qf.options[qf.selectedIndex].value;
+        if (qf_val == 'XYZW')
+            {
+                // write list elements in the quaternion input fields
+                document.getElementById("q0").value = toReal(f[0]);
+                document.getElementById("q1").value = toReal(f[1]);
+                document.getElementById("q2").value = toReal(f[2]);
+                document.getElementById("q3").value = toReal(f[3]);
+                // call update function for quaternion input
+                update(1);
+            }
+            else if (qf_val == 'WXYZ')
+            {
+                // write list elements in the quaternion input fields
+                document.getElementById("q3").value = toReal(f[0]);
+                document.getElementById("q0").value = toReal(f[1]);
+                document.getElementById("q1").value = toReal(f[2]);
+                document.getElementById("q2").value = toReal(f[3]);
+                // call update function for quaternion input
+                update(1);
+            }
     }
     else if (f.length == 3)
     {
@@ -481,13 +510,40 @@ function updateInput()
         console.log("not recognized");
     }
 }
+// move w component to the front or bag of the quaternion input fields
+function change_quat()
+{
+    var qf = document.getElementById("quat_format");
+    var qf_val = qf.options[qf.selectedIndex].value;
+    var q0 = document.getElementById("quat_start");
+    var q3 = document.getElementById("q3");
+    var q0_name = document.getElementById("q0_name");
+    var q3_name = document.getElementById("q3_name");
+    var q2 = document.getElementById("q2");
+    var quat_output_text = document.getElementById("quat_output_text");
+    if (qf_val == 'WXYZ')
+    {
+        q0_name.parentNode.insertBefore(q3, q0_name);
+        q3.parentNode.insertBefore(q3_name, q3);
+        quat_output_text.innerHTML = 'Quaternion [w, x, y, z] <br /><textarea id="resq" rows="1" cols="85" readonly></textarea>';
+        update(1);
+    }
+    else if (qf_val == 'XYZW')
+    {
+        q2.parentNode.insertBefore(q3, q2.nextSibling);
+        q2.parentNode.insertBefore(q3_name, q2.nextSibling);
+        quat_output_text.innerHTML = 'Quaternion [x, y, z, w] <br /><textarea id="resq" rows="1" cols="85" readonly></textarea>';
+        update(1);
+
+    }
+}
 </script>
 <p>Output angle format
 <label><input type="radio" id="resformatrad" name="resformat" value="0" checked onchange="doOutput()"/>Radians</label>
 <label><input type="radio" id="resformatdeg" name="resformat" value="1" onchange="doOutput()"/>Degrees</label>
 <p>Rotation matrix
 <br /><textarea id="resmatrix" rows="3" cols="70" readonly></textarea>
-<p>Quaternion [x, y, z, w]
+<p id="quat_output_text">Quaternion [x, y, z, w]
 <br /><textarea id="resq" rows="1" cols="85" readonly></textarea>
 <p>Axis-Angle {[x, y, z], angle<span name="spanangleres"> (radians)</span>}
 <br /><textarea id="resa" rows="1" cols="85" readonly></textarea>
