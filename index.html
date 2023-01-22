@@ -120,6 +120,7 @@ input[type=number]{
 <p>Input angle format
 <label><input type="radio" id="iformatrad" name="iformat" value="0" checked onchange="update(inputMode)"/>Radians</label>
 <label><input type="radio" id="iformatdeg" name="iformat" value="1" onchange="update(inputMode)"/>Degrees</label>
+<p>Quaternion format
 <span class="dl"><select id="quat_format" onchange="change_quat()">
 <option value="XYZW" selected>X,Y,Z,W</option>
 <option value="WXYZ">W,X,Y,Z</option>
@@ -526,14 +527,14 @@ function change_quat()
         q0_name.parentNode.insertBefore(q3, q0_name);
         q3.parentNode.insertBefore(q3_name, q3);
         quat_output_text.innerHTML = 'Quaternion [w, x, y, z] <br /><textarea id="resq" rows="1" cols="85" readonly></textarea>';
-        update(1);
+        updateInput();
     }
     else if (qf_val == 'XYZW')
     {
         q2.parentNode.insertBefore(q3, q2.nextSibling);
         q2.parentNode.insertBefore(q3_name, q2.nextSibling);
         quat_output_text.innerHTML = 'Quaternion [x, y, z, w] <br /><textarea id="resq" rows="1" cols="85" readonly></textarea>';
-        update(1);
+        updateInput();
 
     }
 }
