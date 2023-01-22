@@ -120,6 +120,9 @@ input[type=number]{
 <p>Input angle format
 <label><input type="radio" id="iformatrad" name="iformat" value="0" checked onchange="update(inputMode)"/>Radians</label>
 <label><input type="radio" id="iformatdeg" name="iformat" value="1" onchange="update(inputMode)"/>Degrees</label>
+<!-- <p>Quaternion Format
+<label><input type="radio" id="XYZW" name="iformat_quat" value="0" onchange="update(inputMode)"/>[W,X,Y,Z]</label>
+<label><input type="radio" id="WXYZ" name="iformat_quat" value="1" checked onchange="update(inputMode)"/>[X,Y,Z,W]</label> -->
 <p class="pi" id="ip0">Rotation matrix
 <br /><span class="dl"></span><input type="number" pattern="\d+(\.\d*)?" id="m00" value="1" oninput="update(0)"/>
 <span class="dl2"></span><input type="number" pattern="\d+(\.\d*)?" id="m01" value="0" oninput="update(0)"/>
@@ -180,6 +183,11 @@ R:
 <span class="dl2">y</span><input type="number" pattern="\d+(\.\d*)?" id="Ry" value="1" oninput="update(5)"/>
 <span class="dl2">z</span><input type="number" pattern="\d+(\.\d*)?" id="Rz" value="0" oninput="update(5)"/>
 <br/>
+
+<p class="pi" id="ip5"> Automatic input cast (Quaternion, Rotation Matrix, Euler ngles)
+<br />
+<textarea id="inputTextField" rows="10" oninput="updateInput()"></textarea> 
+<br/>
 </div>
 
 <div class="dcol">
@@ -193,8 +201,8 @@ function matrixToString(m)
 {
     var r = m.elements;
     var s = 
-         '[ ' +toFixedWidth(r[0])+', '+toFixedWidth(r[4])+', '+toFixedWidth(r[8])+';\n'
-        +'  ' +toFixedWidth(r[1])+', '+toFixedWidth(r[5])+', '+toFixedWidth(r[9])+';\n'
+         '[ ' +toFixedWidth(r[0])+', '+toFixedWidth(r[4])+', '+toFixedWidth(r[8])+',\n'
+        +'  ' +toFixedWidth(r[1])+', '+toFixedWidth(r[5])+', '+toFixedWidth(r[9])+',\n'
         +'  ' +toFixedWidth(r[2])+', '+toFixedWidth(r[6])+', '+toFixedWidth(r[10])+' ]';    
     return s;
 }
@@ -389,6 +397,89 @@ function toFixedWidth(x){
 	{
 		return x;
 	}
+}
+// cast input to float array with '[-+]?[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?' from inputTextField
+function castInput()
+{
+    var input = document.getElementById("inputTextField").value;
+    var re = /[-+]?[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?/g;
+    var m = input.match(re);
+    if (m == null)
+    {
+        // empty float array
+        var f = new Array();
+        return f;
+    }
+    else
+    {
+        var f = new Array();
+        for (var i = 0; i < m.length; i++)
+        {
+            f[i] = parseFloat(m[i]);
+        }
+        return f;
+    }
+}
+// call the specific update function based on length of cast input float array
+function updateInput()
+{
+    var f = castInput();
+    if (f.length == 4)
+    {
+        // write list elements in the quaternion input fields
+        document.getElementById("q0").value = toReal(f[0]);
+        document.getElementById("q1").value = toReal(f[1]);
+        document.getElementById("q2").value = toReal(f[2]);
+        document.getElementById("q3").value = toReal(f[3]);
+        // call update function for quaternion input
+        update(1);
+
+    }
+    else if (f.length == 3)
+    {
+        // write list elements to euler input fields
+        document.getElementById("e0").value = toReal(f[0]);
+        document.getElementById("e1").value = toReal(f[1]);
+        document.getElementById("e2").value = toReal(f[2]);
+        // call update function for euler input
+        update(4);
+    }
+    else if (f.length == 9)
+    {
+        console.log("ROTATION MATRIX");
+        // write list elements to rotation matrix input fields
+        document.getElementById("m00").value = toReal(f[0]);
+        document.getElementById("m01").value = toReal(f[1]);
+        document.getElementById("m02").value = toReal(f[2]);
+        document.getElementById("m10").value = toReal(f[3]);
+        document.getElementById("m11").value = toReal(f[4]);
+        document.getElementById("m12").value = toReal(f[5]);
+        document.getElementById("m20").value = toReal(f[6]);
+        document.getElementById("m21").value = toReal(f[7]);
+        document.getElementById("m22").value = toReal(f[8]);
+        // call update function for rotation matrix input
+        update(0);
+    }
+    else if (f.length == 16)
+    {
+        console.log("TRANSFORMATION MATRIX");
+        // write list elements to rotation matrix input fields (inner 3x3)
+        document.getElementById("m00").value = toReal(f[0]);
+        document.getElementById("m01").value = toReal(f[1]);
+        document.getElementById("m02").value = toReal(f[2]);
+        document.getElementById("m10").value = toReal(f[4]);
+        document.getElementById("m11").value = toReal(f[5]);
+        document.getElementById("m12").value = toReal(f[6]);
+        document.getElementById("m20").value = toReal(f[8]);
+        document.getElementById("m21").value = toReal(f[9]);
+        document.getElementById("m22").value = toReal(f[10]);
+        // call update function for rotation matrix input
+        update(0);
+    }
+    else
+    {
+        console.log("not recognized");
+    }
 }
 </script>
 <p>Output angle format
