@@ -392,8 +392,10 @@
                                 const width = container.clientWidth;
                                 const height = container.clientHeight;
                                 renderer.setSize(width, height);
-                                camera.aspect = width / height;
-                                camera.updateProjectionMatrix();
+                                // camera.aspect = width / height;
+                                aspectRatio = width / height;
+                                camera.left = frustumSize * aspectRatio / -2;
+                                camera.right = frustumSize * aspectRatio / 2;
                             }
                             window.addEventListener('resize', onWindowResize);
                         }
@@ -735,7 +737,6 @@
                         </select>
                         <br />
                         <textarea id="rese" rows="1" cols="70" readonly></textarea>
-                        <!--black div box with height of 1/4 viewport height -->
                     <div id="scene-container" style="height: 50%;; width:100%; position: relative;"></div>
                 </div>
 
